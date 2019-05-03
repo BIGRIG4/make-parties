@@ -1,5 +1,6 @@
 // Initialize express
 const express = require('express');
+const methodOverride = require('method-override');
 const app = express();
 const bodyParser = require('body-parser');
 
@@ -24,6 +25,11 @@ var events = [
   { title: "I am your second event", desc: "A great event that is super fun to look at and good", imgUrl: "https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA4OC85MTEvb3JpZ2luYWwvZ29sZGVuLXJldHJpZXZlci1wdXBweS5qcGVn" },
   { title: "I am your third event", desc: "A great event that is super fun to look at and good", imgUrl: "https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA4OC85MTEvb3JpZ2luYWwvZ29sZGVuLXJldHJpZXZlci1wdXBweS5qcGVn" }
 ]
+
+// override with POST having ?_method=DELETE or ?_method=PUT
+app.use(methodOverride('_method'));
+
+
 app.post('/events', (req, res) => {
   console.log(req.body);
 })
@@ -53,7 +59,13 @@ app.get('/events/:id', (req, res) => {
   res.send('I\'m an event')
 });
 
-
+app.get('/events/:id/edit', (req, res) => {
+  models.Event.findByPk(req.params.id).then((event) => {
+    res.render('events-edit', { event: event });
+  }).catch((err) => {
+    console.log(err.message);
+  })
+});
 
 
 // INDEX
