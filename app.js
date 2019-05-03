@@ -5,7 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 
 
-
+require('./controllers/events')(app, models);
 
 
 
@@ -56,17 +56,13 @@ app.put('/events/:id', (req, res) => {
 
 // Tell our app to send the "hello world" message to our home page
 
-app.get('/', (req, res) => {
-  res.render('home', { msg: 'Handlebars are Cool!' });
-});
-
-app.get('/', (req, res) => {
-  models.Event.findByPk(req.params.id).then((event) => {
-    res.render('events-show', { event: event })
-  }).catch((err) => {
-    console.log(err.message);
-  })
-})
+// app.get('/', (req, res) => {
+//   models.Event.findByPk(req.params.id).then((event) => {
+//     res.render('events-show', { event: event })
+//   }).catch((err) => {
+//     console.log(err.message);
+//   })
+// })
 app.get('/events/:id', (req, res) => {
   res.send('I\'m an event')
 });
@@ -81,10 +77,10 @@ app.get('/events/:id/edit', (req, res) => {
 
 
 // INDEX
-app.get('/', (req, res) => {
-  res.render('events-index', { events: events });
-})
-
+// app.get('/', (req, res) => {
+//   res.render('events-index', { events: events });
+// })
+//
 app.get('/events', (req, res) => {
   res.render('events-index', { events: events });
 })
